@@ -28,7 +28,8 @@ The Data Analyst Nanodegree program offers you the opportunity to master data sk
 
 Note that I took the Data Analyst Nanodegree program when it consisted of 2 terms.
 
-Currently (As of 05/19/2019) - The program has been updated to only contain one term (See syllabus of the updated program [here](./nd002-syllabus_2018-June_v9.pdf))
+Currently (As of 05/19/2019) - The program has been updated to only contain one term (See a syllabus of the updated program [here](./nd002-syllabus_2018-June_v9.pdf))
+*(eOte that I could not find the original syllabus anymore)*
 
 A major difference between the old and updated courses is that the the old course
 also provide classes to go over Python (numpy+pandas+matplotlib) and SQL in great details during Term 1 and I also did projects for them as well.
@@ -67,11 +68,18 @@ Learn to apply sound design and data visualization principles to the data analys
 
 #### Welcome to Term 1!
 
-[Project: Exploring Weather Trends](./Project_Finding_Donor_For_CharityML)
+[Project: Exploring Weather Trends](./Project_Exploring_Weather_Trends/Project_Exploring_Weather_Trends.pdf)
 
 Exploring Weather Trends - Project Instructions
 Summary
 In this project, you will analyze local and global temperature data and compare the temperature trends where you live to overall global temperature trends.
+
+#### Introduction to Python
+
+[Project: Explore US Bikeshare Data](./Project_Explore_US_Bikeshare_Data/Bike_Share_Analysis.ipynb)
+
+In this project, you will make use of Python to explore data related to bikeshare systems for three major bikeshare systems in the United States. You will perform data wrangling to unify the format of data from the three systems and write code to compute descriptive statistics. You will also make use of a package that is not part of the standard Python library to help you visualize the data.
+
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
