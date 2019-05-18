@@ -108,7 +108,7 @@ In this project, you will investigate a classic phenomenon from experimental psy
 
 #### Exploratory Data Analysis
 
-[Project: Explore and Summarize Data](./Project_Explore_and_Summarize_Data/Analysis_of_ProposeLoanData.rmd)
+[Project: Explore and Summarize Data](https://htmlpreview.github.io/?https://raw.githubusercontent.com/nongnoochr/udacity_data_analyst_nanodegree/master/Project_Explore_and_Summarize_Data/Analysis_of_ProposeLoanData.html?token=ADY55V7IMMBL2VBNACYWBOC44AY5K)
 
 In this project, you will use R and apply exploratory data analysis techniques to explore relationships in one variable to multiple variables and to explore a selected data set for distributions, outliers, and anomalies.
 

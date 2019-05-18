@@ -1,6 +1,7 @@
 # Local Files
 .DS_Store
 database.sqlite
+2008_master_7_28_18.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
