@@ -10,7 +10,21 @@ This project contains projects for the ***[Data Analyst Nanodegree Program](http
 5. [Licensing, Authors, and Acknowledgements](#licensing)
 
 ##  Project List<a name="projectlists"></a>
-TBD
+
+### Term 1:
+
+* **Welcome to Term 1!:** [Project: Exploring Weather Trends](./Project_Exploring_Weather_Trends/Project_Exploring_Weather_Trends.pdf)
+* **Introduction to Python:** [Project: Explore US Bikeshare Data](./Project_Explore_US_Bikeshare_Data/Bike_Share_Analysis.ipynb)
+* **Introduction to Data Analysis:** [Project: Investigating a Dataset](./Project_Investigate_a_Dataset/Investigate_a_Dataset.ipynb)
+* **Practical Statistics:** [Project: Analyze A/B Test Results](./Project_Analyze_AB_Test_Results/Analyze_ab_test_results_notebook.ipynb)
+
+### Term 2:
+
+* **Welcome to Term 2:** [Project: Test a Perceptual Phenomenon](./Project_Test_Perceptual_Phenomenon/Test_Perceptual_Phenomenon.ipynb)
+* **Exploratory Data Analysis:** [Project: Explore and Summarize Data](https://htmlpreview.github.io/?https://raw.githubusercontent.com/nongnoochr/udacity_data_analyst_nanodegree/master/Project_Explore_and_Summarize_Data/Analysis_of_ProposeLoanData.html?token=ADY55V7IMMBL2VBNACYWBOC44AY5K)
+* **Data Wrangling:** [Project: Wrangle and Analyze Data](./Project_Wrangle_and_Analyze_Data/wrangle_act.ipynb)
+* **Data Story Telling:** [Project: Create a Tableau Story](./Project_Create_Tableau_Story/reportout.pdf)
+
 
 ## Nanodegree Details<a name="nddetails"></a>
 
@@ -82,7 +96,6 @@ In this project, you will make use of Python to explore data related to bikeshar
 
 #### Introduction to Data Analysis
 
-
 [Project: Investigating a Dataset](./Project_Investigate_a_Dataset/Investigate_a_Dataset.ipynb)
 
 In this project, you'll go through the data analysis process and see how everything fits together. Later Nanodegree projects will focus on individual pieces of the data analysis process.
@@ -122,6 +135,13 @@ Real-world data rarely comes clean. Using Python and its libraries, you will gat
 The dataset that you will be wrangling (and analyzing and visualizing) is the tweet archive of Twitter user @dog_rates, also known as WeRateDogs. WeRateDogs is a Twitter account that rates people's dogs with a humorous comment about the dog. These ratings almost always have a denominator of 10. The numerators, though? Almost always greater than 10. 11/10, 12/10, 13/10, etc. Why? Because "they're good dogs Brent." WeRateDogs has over 4 million followers and has received international media coverage.
 
 WeRateDogs downloaded their Twitter archive and sent it to Udacity via email exclusively for you to use in this project. This archive contains basic tweet data (tweet ID, timestamp, text, etc.) for all 5000+ of their tweets as they stood on August 1, 2017. More on this soon.
+
+#### Data Story Telling
+
+[Project: Create a Tableau Story](./Project_Create_Tableau_Story/reportout.pdf)
+
+For this project, you will create a data visualization using Tableau that tells a story or highlights trends or patterns in a data set. Your work should be a reflection of the theory and practice of data visualization, such as visual encodings, design principles, and effective communication.
+
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
