@@ -1,0 +1,1267 @@
+Loan Data From Proper Exploration by NongR
+========================================================
+
+```{r, echo=FALSE}
+# Workaround for an error when Knit this .rmd file
+knitr::opts_chunk$set(error = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using in your analysis in this code
+# chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk. This
+# prevents the code from displaying in the knitted HTML output. You should set
+# echo=FALSE for all code chunks in your file, unless it makes sense for your
+# report to show the code that generated a particular plot.
+
+# The other parameters for "message" and "warning" should also be set to FALSE
+# for other code chunks once you have verified that each plot comes out as you
+# want it to. This will clean up the flow of your report.
+
+library(ggplot2)
+
+library(dplyr)
+library(lubridate)
+library(gridExtra)
+library(grid)
+library(GGally)
+library(RColorBrewer)
+
+```
+
+
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+
+pl <- read.csv('prosperLoanData.csv')
+
+```
+
+
+
+This report explores a dataset containing prices and attributes for 
+approximately 114,000 records and 81 variables in this data frame.
+
+```{r echo=FALSE}
+dim(pl)
+```
+
+Before start analyzing this data, let's update the order of the factor levels of
+the variables 'CreditGrade' and create a new variable called 'ListingCategory' 
+to store a name of the Listing category
+
+```{r}
+
+# Create a new variable called ListingCategory.
+# We will later update this variable to store a name of the Listing Category
+pl$ListingCategory <- pl$ListingCategory..numeric.
+
+# Update the Term and ListingCategory columns to be a factor  
+pl <- mutate_at(pl, vars(Term, ListingCategory), as.factor)
+
+
+## --- Update levels
+# Update levels of CreditGrade to sorted from Highest to Lowest first
+levelsCreditGrade <- c("AA", "A", "B", "C", "D", "E", "HR", "NC", "")
+
+levels(pl$CreditGrade) <- levelsCreditGrade
+
+# Update levels of IncomeRange
+levelsIncomeRange <- c("Not displayed", "Not employed", 
+                       "$0", "$1-24,999", "$25,000-49,999", 
+                       "$50,000-74,999", "$75,000-99,999", "$100,000+")
+
+levels(pl$IncomeRange) <- levelsIncomeRange
+
+# Update levels of ListingCategory
+
+levelsListingCat <- c(
+  "Not Available",         #0
+  "Debt Consolidation",    #1
+  "Home Improvement",      #2
+  "Business",              #3
+  "Personal Loan",         #4
+  "Student Use",           #5
+  "Auto",                  #6
+  "Other",                 #7
+  "Baby&Adoption",         #8
+  "Boat",                  #9
+  "Cosmetic Procedure",    #10
+  "Engagement Ring",       #11
+  "Green Loans",           #12
+  "Household Expenses",    #13
+  "Large Purchases",       #14
+  "Medical/Dental",        #15
+  "Motorcycle",            #16
+  "RV",                    #17
+  "Taxes",                 #18
+  "Vacation",              #19
+  "Wedding Loans")         #20
+
+levels(pl$ListingCategory) <- levelsListingCat
+
+str(pl)
+```
+
+
+# Univariate Plots Section
+
+
+__CreditGrade__
+
+
+* Applications with the highest Credit Rating (CreditGrade) which is "AA" has 
+the highest record which is expected
+
+```{r echo=FALSE}
+ggplot(aes(x=CreditGrade), data=pl) +
+  geom_bar()
+
+```
+
+
+```{r echo=FALSE}
+
+table(pl$CreditGrade)
+```
+
+
+* Interestingly, applications with the medium credit grades ("C", "D", "E")  
+have a higher number of loans. I originally expected that this chart should be 
+skewed to the right but it is not a case here.
+
+```{r echo=FALSE}
+ggplot(aes(x=CreditGrade), data=subset(pl, (CreditGrade!= 'AA' & CreditGrade != ""))) +
+  geom_bar()
+
+```
+
+__ListingCreatingDate__
+
+* ListingCreationDate was steady increased during 2006 to early 2008, and 
+mid 2009 to late 2012
+* (Puzzle) There is a significant drop to almost 0 was seen from mid 2008 to 
+mid 2009. Is it because data was not collected during that period?
+* We are seeing a spike of number of Listing from 2013 to 2014
+
+```{r echo=FALSE}
+
+grpCreationDate <- pl %>% 
+  group_by(date_by_month=floor_date(as.Date(ListingCreationDate), "month")) %>% 
+  summarize(n = n())
+
+# Plot chart with plotty
+ggplot(aes(x=date_by_month, y=n), data=grpCreationDate) + 
+  geom_line() + 
+  xlab('Listing Creation by month') +
+  ylab('Count') +
+  scale_x_date( date_labels = "%Y", date_minor_breaks = "1 month", date_breaks = "1 year")
+
+```
+
+Let's take a closely look at a count of listings of each CreditGrade.
+
+It is very interesting that:
+
+* We only have data of ListingCreationDate for applications with the CreditGrade 
+lower than 'AA' from 2006 to 2009
+* Data of the CreditGrade 'AA' started from mid 2007 all the way to 2014
+* (Puzzle) Is it because of how the system changed at that time or the data 
+engineer decided the only collect data with the CreditGrade 'AA' at that point, 
+and stopped collecting data for other grades?
+
+```{r echo=FALSE}
+
+grpCreationDate_CreditGrade <- pl %>% 
+  group_by(date_by_month=floor_date(as.Date(ListingCreationDate), "month"), 
+           CCGrade=CreditGrade) %>% 
+  summarize(n = n())
+
+p_grpCreationDate_CreditGrade <- 
+  ggplot(aes(x=date_by_month, y=n), data=grpCreationDate_CreditGrade) + 
+  geom_line() + 
+  xlab('Listing Creation by month') +
+  ylab('Count') +
+  scale_x_date( date_labels = "%Y",date_breaks = "2 year")
+
+p_grpCreationDate_CreditGrade + facet_wrap(~CCGrade, ncol=3)
+```
+
+From the discovery above, I assume that we only need to focus on the CreditGrade 
+'AA' from 2010 for this analysis since a number of count before 2010 is 
+closed to 0.
+
+See this link for more details about the propser loan
+
+https://www.lendingmemo.com/prosper-loan-complaints/
+
+__New data set__
+
+From this point on, we will analyze data where the ListingCreationDate is 
+greater than or equal to 2010 and there are almost 83,000 records in the new 
+data set
+
+```{r}
+
+# Get a subset of data which has the ListingCreationData >= 2010
+new_pl <- subset(pl, year(ListingCreationDate) >= 2010)
+dim(new_pl)
+```
+
+__BorrowerRate__
+
+In average, the BorrowRate is around 0.15 except a very high number of 
+applications with the Borrow rate around 3.25. Why is that the case?
+
+```{r echo=FALSE}
+
+p1 <- ggplot(aes(x=BorrowerRate), data=new_pl) +
+  geom_histogram(binwidth = 0.005) +
+  xlim(0, 0.4)
+
+p2 <- ggplot(aes(x='', y=BorrowerRate), 
+             data= subset(new_pl, is.finite(BorrowerRate))) +
+  geom_boxplot() +
+  ylim(0, 0.4) +
+  coord_flip()
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), size = "last"))
+
+```
+
+```{r echo=FALSE}
+
+summary(new_pl$BorrowerRate)
+
+```
+
+
+__Occupation__
+
+Let's zoom in data by occupation. The charts below show that most applications
+have the Occupations set to 'Other' and the LoanOriginalAmount of this category
+is varied a lot comparing to other occupations.
+
+```{r echo=FALSE, fig.width=16, fig.height=12}
+
+grp_Occupation <- new_pl %>% 
+  group_by(Occupation) %>% 
+  summarise(Count = n()) %>% 
+  arrange(desc(Count))
+
+p1 <- ggplot(aes(x=reorder(Occupation, Count), y=Count), data=grp_Occupation) +
+  geom_bar(stat = "identity", width=0.5, position=position_dodge(width=0.25)) +
+  geom_text(
+    aes(label = Count),
+    position = position_dodge(0.9),
+    hjust = -0.25
+  ) +
+  ylim(0, 22000) +
+  ggtitle('# Applications by Occupation') +
+  coord_flip()
+
+
+p2 <- ggplot(aes(x=reorder(Occupation, Occupation, 
+                           function(x) { length(x)}), y=LoanOriginalAmount), 
+             data = new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('LoanOriginalAmount by Occupation') +
+  coord_flip()
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+__EmploymentStatus__
+
+Most applications have the EmploymentStatus 'Employed' and the median 
+LoanOriginalAmount of this category is higher than others.
+
+```{r echo=FALSE, fig.width=16}
+
+
+p1 <- ggplot(aes(x=reorder(EmploymentStatus, EmploymentStatus, 
+                           function(x) { length(x)})), 
+             data = new_pl) +
+  geom_bar() +
+  geom_text(
+    stat = 'count',
+    aes(label = ..count..),
+    position = position_dodge(0.9),
+    hjust = -0.25
+  ) +
+  ylim(0, 70000) +
+  ggtitle('# applications by EmploymentStatus') +
+  coord_flip()
+
+
+p2 <- ggplot(aes(x=reorder(EmploymentStatus, EmploymentStatus, 
+                           function(x) { length(x)}), 
+                 y=LoanOriginalAmount), 
+             data=new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('LoanOriginalAmount by EmploymentStatus') +
+  coord_flip()
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+
+__BorrowerState__
+
+Now, let's take a look at a number of Listings by each state. 
+Looks like major cities have a higher number of applications.
+
+```{r  echo=FALSE, fig.width=16, fig.height=12}
+
+pState_1 <- ggplot(aes(x=reorder(BorrowerState, BorrowerState, 
+                                 function(x) { length(x)})), 
+                   data = new_pl) +
+  geom_bar() +
+  geom_text(
+    stat = 'count',
+    aes(label = ..count..),
+    position = position_dodge(0.9),
+    hjust = -0.25
+  ) +
+  ylim(0, 11000) +
+  ggtitle('# Applications by BorrowerState') +
+  coord_flip()
+
+pState_2 <- ggplot(aes(x=reorder(BorrowerState, BorrowerState, 
+                                 function(x) { length(x)}), 
+                       y=LoanOriginalAmount), 
+                   data=new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('LoanOriginalAmount by BorrowerState') +
+  coord_flip()
+
+grid.arrange(pState_1, pState_2, ncol=2)
+
+```
+
+From the summary in terms of a number of applications in each state, 'Wyoming' 
+(WY) has the lowest number of applications which is 119 and 'California' (CA) 
+has the highest number of applications which is 10,479.
+
+The median number of applications is 1161.5 and average number is 1722.4.
+
+```{r echo=FALSE}
+
+grp_BorrowerState <- new_pl %>% 
+  group_by(BorrowerState) %>% 
+  summarise(Count = n()) %>%
+  arrange(desc(Count))
+
+summary(grp_BorrowerState$Count)
+```
+
+The boxplot below shows that there are four states where a number of 
+applications far exceeds the majority (outliers). 
+
+When combining information from the bar chart above and the boxplot below we can
+identify that those four states are California (CA), New York (NY), Texas (TX),
+and Florida (FL). Also notice that a number of applications in CA is also far 
+more than the other three states.
+
+```{r echo=FALSE}
+
+ggplot(aes(x='', y=Count), data= grp_BorrowerState) +
+  geom_boxplot() +
+  xlab('# applications in each state')
+```
+
+
+The maps below make it clear that a number of listings is higher in the major 
+cities.
+
+* This first map clearly shows that there are three states loans are 
+not available; Maine, Iowa, and North Dakota
+(Complaint#5 in https://www.lendingmemo.com/prosper-loan-complaints/)
+* The second map shows that the big cities have a higher number of applications
+
+
+```{r echo=FALSE, fig.width=10}
+
+grp_BorrowerState_map <- new_pl %>% 
+  mutate(statename = state.name[match(BorrowerState,state.abb)]) %>%
+  group_by(statename) %>% 
+  summarise(Count = n()) %>% 
+  mutate(long = state.center$x[match(statename, state.name)], 
+         lat = state.center$y[match(statename, state.name)])
+
+states_map <- map_data("state")
+ggplot(grp_BorrowerState_map, aes(map_id = tolower(statename))) +
+    geom_map(aes(fill = Count), map = states_map) +
+    expand_limits(x = states_map$long, y = states_map$lat)
+  
+```
+
+```{r echo=FALSE, fig.width=10}
+
+ggplot() +
+  geom_path(data = states_map, 
+            aes(x = long, y = lat, group = group)) +
+  geom_point(data = subset(grp_BorrowerState_map, !is.na(statename)), 
+             aes(x = long, y = lat, size = Count), 
+             shape = 21, colour = "#000000", fill = "#40b8d0") 
+
+```
+
+__Term__
+
+The histogram below shows that most applications have the 36-Term.
+
+```{r echo=FALSE}
+
+grp_Term <- new_pl %>% 
+  group_by(Term) %>% 
+  summarise(Count = n())
+
+
+ggplot(aes(x=Term, y=Count), data=grp_Term) +
+  geom_bar(stat='identity') +
+  geom_text(
+    aes(label = Count),
+    position = position_dodge(0.9),
+    vjust = -0.5
+  )
+
+```
+
+__IncomeRange__
+
+Majority of the applications have the IncomeRange between $1-$50,000. There are 
+also applications with IncomeRange = 0. Did they get a loan?
+
+```{r echo=FALSE}
+
+grp_IncomeRange <- new_pl %>% 
+  group_by(IncomeRange) %>% 
+  summarise(Count = n())
+
+
+ggplot(aes(x=IncomeRange, y=Count), data=grp_IncomeRange) +
+  geom_bar(stat='identity')
+
+
+```
+
+__DebtToIncomeRatio__
+
+From the histogram and boxplot, most of the applications have the 
+DebtToIncomeRatio less than 1. 
+
+However, there are also outliers where the DebtToIncomeRatio > 1 and up to 
+DebtToIncomeRatio = 10.01. What is a status of those applications?
+
+```{r echo=FALSE}
+
+p1 <- ggplot(aes(x=DebtToIncomeRatio), 
+             data=subset(new_pl, is.finite(DebtToIncomeRatio))) +
+  geom_histogram(binwidth=0.05)
+
+p2 <- ggplot(aes(x='', y=DebtToIncomeRatio), 
+             data= subset(new_pl, is.finite(DebtToIncomeRatio))) +
+  geom_boxplot() +
+  coord_flip()
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), size = "last"))
+
+```
+
+
+
+```{r echo=FALSE}
+
+summary(subset(new_pl, is.finite(DebtToIncomeRatio))$DebtToIncomeRatio)
+```
+
+The frequency polygon below shows that most applications have the DebtToIncomeRatio 
+around 0.2.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+ggplot(aes(x=DebtToIncomeRatio), data=subset(new_pl,  DebtToIncomeRatio < 2)) +
+  geom_freqpoly(binwidth=0.01) +
+  scale_x_continuous(limits = c(0, 1))
+```
+
+__ListingCategory__
+
+Most applications apply the Proper loan for 'Debt Consolidation' with the median 
+LoanOriginalAmout around $10,000
+
+```{r echo=FALSE, , fig.width=10}
+
+p1 <- ggplot(aes(x=reorder(ListingCategory, ListingCategory, 
+                           function(x) length(x))), 
+             data=new_pl) +
+  geom_bar() +
+  ggtitle('# applications by ListingCategory') +
+  coord_flip()
+
+p2 <- ggplot(aes(x=reorder(ListingCategory, ListingCategory, 
+                           function(x) { length(x)}), 
+                 y=LoanOriginalAmount), 
+             data=new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('LoanOriginalAmount by ListingCategory') +
+  coord_flip()
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+
+__CreditScoreRange__
+
+The median of the CreditScoreRangeLower is 700 and the median of the 
+CreditScoreRangeUpper is 719.
+
+```{r echo=FALSE, fig.height=8}
+
+p1 <- ggplot(aes(x=CreditScoreRangeLower), data=new_pl) +
+  geom_histogram(binwidth=5) +
+  xlim(600, 900)
+
+p2 <- ggplot(aes(x='', y=CreditScoreRangeLower), data= new_pl) +
+  geom_boxplot() +
+  ylim(600, 900) +
+  coord_flip()
+
+pUpper1 <- ggplot(aes(x=CreditScoreRangeUpper), data=new_pl) +
+  geom_histogram(binwidth=5)  +
+  xlim(600, 900)
+
+pUpper2 <- ggplot(aes(x='', y=CreditScoreRangeUpper), data= new_pl) +
+  geom_boxplot()  +
+  ylim(600, 900) +
+  coord_flip()
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(p1), 
+                ggplotGrob(p2), 
+                ggplotGrob(pUpper1),
+                ggplotGrob(pUpper2),
+                size = "first"))
+
+```
+
+
+```{r echo=FALSE}
+print('*** Summary of CreditScoreRangeLower ***')
+summary(new_pl$CreditScoreRangeLower)
+```
+
+
+```{r echo=FALSE}
+
+print('*** Summary of CreditScoreRangeUpper ***')
+summary(new_pl$CreditScoreRangeUpper)
+```
+
+
+# Univariate Analysis
+
+### What is the structure of your dataset?
+
+There are approximately 114,000 records and 81 variables. After analyzing the 
+ListingCreatingDate variable, We found that data with various CreditGrade were
+not created after 2009, and only data with the CreditGrade 'AA' was created 
+after 2010. Hence, I only filtered data with the ListingCreatingDate is greater
+than or equal to 2010 for this exploration.
+
+With the new dataset, there are approximately 83,000 records with 82 variables 
+where an additional factor variable 'ListingCategory' was created to store a 
+ListingCategory name of each record
+
+
+### What is/are the main feature(s) of interest in your dataset?
+
+I am paricularly interested in finding variables that are best for describing 
+relationship with the BorrowerRate variable.
+
+
+### What other features in the dataset do you think will help support your \
+investigation into your feature(s) of interest?
+
+I think the following variables will correlate to the BorrowerRate; 
+Occupation, EmploymentStatus, BorrowerState, Term, IncomeRange, 
+DebtToIncomeRatio, ListingCategory, CreditScoreRangeLower, and 
+CreditScoreRangeUpper.
+ 
+
+### Did you create any new variables from existing variables in the dataset?
+
+As mentioned in the previous section, I created a new variable 'ListingCategory'
+to store a text of each category to accomodate this analysis.
+
+### Of the features you investigated, were there any unusual distributions? \
+Did you perform any operations on the data to tidy, adjust, or change the form \
+of the data? If so, why did you do this?
+
+I found an unsual trend in the charts that show a number of listings based 
+on the ListingCreatingDate and found that there are no records with various 
+CreditGrade after 2010, and only records with the CreditGrade 'AA' have the
+ListingCreatingDate greater than or equal to 2010 so I decided to only 
+analyze records where the ListingCreatingDate >= 2010.
+
+Also, I updated levels of the variables 'CreditGrade' and 'IncomeRange' to ease 
+a process of creating visualizations for those variables so that an appropriate
+level's order is shown in the plots.
+
+
+# Bivariate Plots Section
+
+
+__Scatterplot Matrix__
+
+Let's start off by creating a scatterplot matric with the variables below:
+
+BorrowerRate, LoanOriginalAmount, StatedMonthlyIncome, DebtToIncomeRatio, CreditScoreRangeLower, CreditScoreRangeUpper, Term, EmploymentStatus
+
+Note that we did not choose the 'Occupation', 'BorrowerState' and 
+'ListingCategory' in this plot because they have a lot of levels
+
+The correlation matrix shows that the 'LoanOriginalAmount', 
+'CreditScoreRangeLower', and 'CreditScoreRangeUpper' variables have a strong 
+correlation with the 'BorrowerRate' variable
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=12}
+
+new_pl_bi <-  select(new_pl,
+                     BorrowerRate, LoanOriginalAmount, StatedMonthlyIncome,
+                     DebtToIncomeRatio, CreditScoreRangeLower,
+                     CreditScoreRangeUpper, Term, EmploymentStatus)
+
+ggcorr(new_pl_bi, label = TRUE)
+
+```
+
+__BorrowerRate vs LoanOriginalAmount__
+
+Let's take a look at a scatter plot of BorrowerRate (y) vs LoanOriginalAmount(x)
+
+```{r echo=FALSE, message=FALSE}
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl_bi) +
+  geom_point(alpha=1/50, position = 'jitter') +
+  geom_smooth()
+```
+
+The correlation coefficient between BorrowerRate and  LoanOriginalAmount is 
+around -0.42 which shows a moderate correlation between those two variables
+
+```{r echo=FALSE}
+
+with(new_pl_bi, cor.test(LoanOriginalAmount, BorrowerRate))
+
+```
+
+__BorrowerRate vs CreditScoreRange__
+
+Let's take a look at a scatter plot of BorrowerRate (y) vs 
+CreditScoreRangeLower(x) and a scatter plot of BorrowerRate (y) vs 
+CreditScoreRangeUpper(x)
+
+The smoothed conditional mean line shows that the BorrowerRate is decreased when
+the CreditScoreRangeLower or CreditScoreRangeUpper is increased
+
+```{r echo=FALSE, message=FALSE}
+
+p1 <- ggplot(aes(x=CreditScoreRangeLower, y=BorrowerRate), data=new_pl_bi) +
+  geom_point(alpha=1/25, position = 'jitter', color='orange') +
+  geom_smooth() +
+  ggtitle('Scatter plot of BorrowerRate (y) vs CreditScoreRangeLower(x)')
+
+p2 <- ggplot(aes(x=CreditScoreRangeUpper, y=BorrowerRate), data=new_pl_bi) +
+  geom_point(alpha=1/25, position = 'jitter', color='orange') +
+  geom_smooth() +
+  ggtitle('Scatter plot of BorrowerRate (y) vs CreditScoreRangeUpper(x)')
+
+grid.arrange(p1, p2, ncol=1)
+
+```
+
+The correlation coefficient between BorrowerRate and CreditScoreRangeLower is 
+around -0.5 which shows a moderate correlation between those two variables
+
+```{r echo=FALSE}
+
+with(new_pl_bi, cor.test(CreditScoreRangeLower, BorrowerRate))
+
+```
+
+The correlation coefficient between BorrowerRate CreditScoreRangeUpper is 
+around -0.5 which shows a moderate correlation between those two variables
+
+```{r echo=FALSE}
+
+with(new_pl_bi, cor.test(CreditScoreRangeUpper, BorrowerRate))
+
+```
+
+
+__BorrowerRate vs BorrowerState__
+
+The boxplot below confirms that the BorrowerState does not have impact on the 
+BorrowerRate since the median value of the BorrowerRate of all states is around 
+0.2 and the boxplots are closely aligned.
+
+```{r echo=FALSE, fig.width=12}
+
+ggplot(aes(x=BorrowerState , y=BorrowerRate), data=new_pl) +
+  geom_boxplot() +
+  stat_summary(fun.y=median, geom="smooth", aes(group=1), lwd=1)
+
+```
+
+
+__BorrowerRate vs Occupation__
+
+The boxplot below also shows that Occuputation does not correlate to the 
+BorrowerRate since the median BorrowerRate is around 0.2 excepts the Occupations 
+with a small number of applications that shows lower BorrowerRate, (for example,
+Judge) 
+
+```{r echo=FALSE, fig.width=16, fig.height=12}
+
+p1 <- ggplot(aes(x=reorder(Occupation, Occupation, 
+                           function(x) length(x))), 
+             data = new_pl) +
+  geom_bar() +
+  ggtitle('# Applications by Occupation') +
+  coord_flip()
+
+
+p2 <- ggplot(aes(x = reorder(Occupation, Occupation, 
+                           function(x) { length(x)}), 
+                 y = BorrowerRate), 
+             data = new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('BorrowerRate by Occupation') +
+  stat_summary(fun.y=median, geom="smooth", aes(group=1), lwd=1) +
+  coord_flip()
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+__BorrowerRate vs ListingCategory__
+
+The boxplot below also shows that ListingCategory does not correlate to the 
+BorrowerRate since the median BorrowerRate is around 0.2.
+
+```{r echo=FALSE, fig.width=16, fig.height=12}
+
+
+p1 <- ggplot(aes(x=reorder(ListingCategory, ListingCategory, 
+                           function(x) length(x))), 
+             data = new_pl) +
+  geom_bar() +
+  ggtitle('# applications by ListingCategory') +
+  coord_flip()
+
+p2 <- ggplot(aes(x = reorder(ListingCategory, ListingCategory, 
+                           function(x) { length(x)}), 
+                 y = BorrowerRate), 
+             data = new_pl) +
+  geom_boxplot(width=0.5, position=position_dodge(width=0.25)) +
+  ggtitle('BorrowerRate by ListingCategory') +
+  stat_summary(fun.y=median, geom="smooth", aes(group=1), lwd=1) +
+  coord_flip()
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+__BorrowerRate vs StatedMonthlyIncome__
+
+Let's take a look at a scatter plot of BorrowerRate (y) vs StatedMonthlyIncome(x).
+
+This scatter plot shows multiple outliers that is difficult to see a relation 
+between the BorrowerRate and StatedMonthlyIncome.
+
+```{r echo=FALSE}
+
+ggplot(aes(x=StatedMonthlyIncome, y=BorrowerRate), data=new_pl_bi) +
+  geom_point()
+
+```
+
+So what is a summary of StatedMonthlyIncome?
+
+```{r echo=FALSE}
+
+summary(new_pl_bi$StatedMonthlyIncome)
+```
+
+Let's create a scatter plot of BorrowerRate (y) vs StatedMonthlyIncome(x) where
+StatedMonthlyIncome is in the 95% percentile.
+
+It looks like the BorrowerRate is slightly decreased when the 
+StatedMonthlyIncome is increased.
+
+```{r echo=FALSE, message=FALSE}
+
+d_Income_95 <- subset(new_pl_bi, 
+                      StatedMonthlyIncome <= quantile(StatedMonthlyIncome, 
+                                                      0.95) )
+
+ggplot(aes(x=StatedMonthlyIncome, y=BorrowerRate), 
+       data=subset(d_Income_95, StatedMonthlyIncome > 0)) +
+  geom_point(alpha=1/25, position='jitter', color='orange') +
+  geom_smooth()
+
+```
+
+The correlation coefficient between BorrowerRate and  StatedMonthlyIncome is 
+around -0.25 which shows a weak correlation between those two variables
+
+```{r echo=FALSE}
+
+with(d_Income_95, cor.test(StatedMonthlyIncome, BorrowerRate))
+
+```
+
+__BorrowerRate vs DebtToIncomeRatio__
+Let's take a look at a scatter plot of BorrowerRate (y) vs DebtToIncomeRatio(x).
+
+This scatter plot shows multiple outliers that is difficult to see a relation 
+between the BorrowerRate and DebtToIncomeRatio
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(aes(x=DebtToIncomeRatio, y=BorrowerRate), data=new_pl_bi) +
+  geom_point()
+
+```
+
+
+What is a summary of DebtToIncomeRatio?
+
+```{r echo=FALSE}
+
+summary(new_pl_bi$DebtToIncomeRatio)
+```
+
+Let's create a scatter plot of BorrowerRate (y) vs DebtToIncomeRatio(x) where
+DebtToIncomeRatio is in the 99% percentile.
+
+It looks like the BorrowerRate is increased when the DebtToIncomeRatio is 
+increased.
+
+```{r echo=FALSE, message=FALSE}
+
+d_DebtToIncomeRatio_99 <- subset(new_pl_bi, 
+                      DebtToIncomeRatio <= quantile(DebtToIncomeRatio, 0.99, 
+                                                    na.rm = TRUE) )
+
+ggplot(aes(x=DebtToIncomeRatio, y=BorrowerRate), 
+       data=subset(d_DebtToIncomeRatio_99, DebtToIncomeRatio > 0)) +
+  geom_point(alpha=1/25, position='jitter', color='orange') +
+  geom_smooth()
+
+```
+
+The correlation coefficient between BorrowerRate and  DebtToIncomeRatio is 
+around 0.18 which shows a weak correlation between those two variables
+
+```{r echo=FALSE}
+
+with(d_DebtToIncomeRatio_99, cor.test(DebtToIncomeRatio, BorrowerRate))
+
+```
+
+__LoanOriginalAmount vs StatedMonthlyIncome__
+
+Let's take a look at the relationship between LoanOriginalAmount and 
+StatedMonthlyIncome.
+
+The scatter plot of LoanOriginalAmount(y) and 95 percentile of 
+StatedMonthlyIncome (x) shows that the LoanOriginalAmount is increased when the 
+StatedMonthlyIndome is increased.
+
+```{r echo=FALSE, message=FALSE}
+
+d_StatedMonthlyIncome_95 <- subset(new_pl, 
+                      StatedMonthlyIncome <= quantile(StatedMonthlyIncome, 0.95) )
+ggplot(aes(x=StatedMonthlyIncome, y=LoanOriginalAmount), 
+       data=d_StatedMonthlyIncome_95) + 
+  geom_point(alpha=1/50, position='jitter', color = 'orange') +
+  geom_smooth()
+  
+```
+
+The correlation coefficient between LoanOriginalAmount and 95 percentile of 
+StatedMonthlyIncome is 0.41 which means that these two variables have a moderate
+correlation.
+
+```{r echo=FALSE}
+
+with(d_StatedMonthlyIncome_95, cor.test(StatedMonthlyIncome, LoanOriginalAmount))
+
+```
+
+# Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the \
+investigation. How did the feature(s) of interest vary with other features in \
+the dataset?
+
+There are a few features, which are LoanOriginalAmount, CreditScoreRangeLower, 
+CreditScoreRangeLower, that have a moderate correlation with the BorrowerRate.
+
+Additionally, there are a few, which are StatedMonthlyIncome and 
+DebtToIncomeRatio, that shows a weak correlation with the BorrowerRate after 
+removing the outlier.
+
+However, other features, such as BorrowerState, Occupation, ListingCategory, do 
+not seem to have any strong relationship with the BorrowerRate
+
+### Did you observe any interesting relationships between the other features \
+(not the main feature(s) of interest)?
+
+The StatedMonthlyIncome and LoanOriginalAmount variables have a moderate
+correlation where the LoanOriginalAmount is increased when the 
+StatedMonthlyIncome is increased
+
+### What was the strongest relationship you found?
+
+The CreditScoreRangeLower/Update have the strongest relationship with the 
+BorrowerRate where their correlation coefficient is around -0.5
+
+# Multivariate Plots Section
+
+
+__BorrowerRate, LoanOriginalAmount | Term __
+
+Let's take a look at a scatter plot of BorrowerRate (y) vs LoanOriginalAmount(x)
+and use a different color for each Term.
+
+It looks like most smaller LoanOriginalAmout has 36 Term but it is hard to tell
+because of overplotting. Let's use a facet_wrap instead.
+
+```{r echo=FALSE}
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_point(aes(colour = Term)) 
+
+```
+
+The plots below show that most of the applications have lower LoanOriginalAmount
+for all Terms.
+Also, it looks like the LoanOriginalAmount is usually about x$5000 
+(darker points) as we see in the plots
+
+```{r echo=FALSE, , message=FALSE}
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_point(alpha=1/50, position = 'jitter') +
+  facet_wrap(~Term, ncol=1)
+
+```
+
+The conditional mean chart for different Term shows that the BorrowerRate of the
+12-Term is the lowest regardless of the LoanOriginalAmount, follow by the 
+36-Term and 60-Term.
+
+```{r echo=FALSE, message=FALSE}
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=Term))
+
+```
+
+__BorrowerRate, LoanOriginalAmount | Occupation, BorrowerState, and ListingCategory__
+
+The facet plots below show that Occupation, BorrowerState, and ListingCategory
+does not have a strong relationship with the BorrowRate and LoanOriginal amount
+since all conditional mean plots show a similar Trend.
+
+Additionally, most applications with the LoanOriginalAmout less than $10,000 
+have the 36-Term with various BorrowerState regardless of Occupation, 
+BorrowerState, and ListingCategory.
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE, warning=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_point(alpha=1/20, position = 'jitter') +
+  geom_smooth() +
+  facet_wrap(~Occupation, ncol=8)
+
+
+```
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate, color=Term), data=new_pl) +
+  geom_point(alpha=1/2) +
+  facet_wrap(~Occupation, ncol=8)
+
+
+```
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_point(alpha=1/20, position = 'jitter') +
+  geom_smooth() +
+  facet_wrap(~BorrowerState, ncol=8)
+
+
+```
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate, color=Term), data=new_pl) +
+  geom_point(alpha=1/2) +
+  facet_wrap(~BorrowerState, ncol=8)
+
+
+```
+
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_point(alpha=1/20, position = 'jitter') +
+  geom_smooth() +
+  facet_wrap(~ListingCategory, ncol=5)
+
+
+```
+
+
+```{r echo=FALSE, fig.width=16, fig.height=16, message=FALSE}
+
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate, color=Term), data=new_pl) +
+  geom_point(alpha=1/2) +
+  facet_wrap(~ListingCategory, ncol=5)
+
+
+```
+
+__BorrowerRate, LoanOriginalAmount | EmploymentStatus __
+
+The chart below shows that applications with the EmploymentStatus 'Not employed' 
+usually gets a higher BorrowerRate regardless of the LoanOriginalAmount where 
+the BorrowRate for other EmploymentStatus is in the same range
+
+```{r echo=FALSE, message=FALSE}
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=EmploymentStatus))
+```
+
+__BorrowerRate, LoanOriginalAmount | IncomeRange __
+
+The chart below shows that applications with the IncomeRange 'Not displayed' gets
+a higher BorrowerRate in general.
+
+However, what surprise me is that the applications with the highest IncomeRange
+($100,000) get a much higher BorrowerRate that other IncomeRange and 
+applications with the lowest IncomeRange ($0) get the lowest BorrowerRate
+
+```{r echo=FALSE, message=FALSE}
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=IncomeRange))
+
+```
+
+__BorrowerRate, LoanOriginalAmount | IncomeRange __
+
+As expected, applications with a lower CreditScoreRange (Lower and Upper) get 
+the Lower BorrowerRate.
+
+Interestingly, applications with a very high CreditScoreRange (Lower and Upper) 
+get the BorrowerRate around 0.1 which is much lower than other CreditScoreRanges.
+
+```{r echo=FALSE, message=FALSE}
+
+new_pl$CreditScoreRangeLower.bucket <- cut(new_pl$CreditScoreRangeLower, 
+                                           breaks = seq(550, 900, by = 50))
+
+# Need to create a custom color palette to make the category name consistent
+myColors <- brewer.pal(7,"Set1")
+names(myColors) <- levels(new_pl$CreditScoreRangeLower.bucket)
+
+p1 <- ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=CreditScoreRangeLower.bucket)) +
+  scale_colour_manual(name = "CreditScoreRangeLower.bucket",values = myColors)
+
+
+new_pl$CreditScoreRangeUpper.bucket <- cut(new_pl$CreditScoreRangeUpper, 
+                                           breaks = seq(550, 900, by = 50))
+
+p2 <- ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=CreditScoreRangeUpper.bucket)) +
+  scale_colour_manual(name = "CreditScoreRangeUpper.bucket",values = myColors)
+
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(p1), 
+                ggplotGrob(p2),
+                size = "first"))
+
+```
+
+# Multivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the \
+investigation. Were there features that strengthened each other in terms of \
+looking at your feature(s) of interest?
+
+There are a few features that provide better insights on the BorrowerRate when 
+observing them with LoanOriginalAmount.
+
+Those features are 
+* Term: The BorrowerRate is less with a smaller term and the BorrowRate will 
+keep decreasing as the LoanOriginalAmount is increased
+* EmploymentStatus: The BorrowerRate is the highest when the EmploymentStatus is
+'Not employed'
+* CreditScoreRange: The BorrowerRate is higher when the CreditScore is less
+
+### Were there any interesting or surprising interactions between features?
+
+I am surprised to see that applications with the highest IncomeRange get a much
+higher BorrowerRate than applications with a very small IncomeRange (e.g. $0).
+
+I originally thought that the IncomeRange should not have any relationship with
+the BorrowerRate but it does not seem to be the case.
+
+### OPTIONAL: Did you create any models with your dataset? Discuss the \
+strengths and limitations of your model.
+
+I did not create any models with this dataset.
+------
+
+# Final Plots and Summary
+
+### Plot One
+
+```{r echo=FALSE, Plot_One}
+
+ggplot(aes(x=date_by_month, y=n), data=grpCreationDate_CreditGrade) + 
+  geom_line() + 
+  xlab('Listing creation on (in months)') +
+  ylab('Number of listings') +
+  scale_x_date( date_labels = "%Y",date_breaks = "2 year") + 
+  facet_wrap(~CCGrade, ncol=3) +
+  ggtitle('THE NUMBER OF LISTINGS OF EACH CREDIT GRADE')
+```
+
+### Description One
+
+I chose this plot for the Plot One section because it shows that majority of 
+listings in this dataset has the CreditGrade 'AA' and they were created after 
+2009 as opposed to other CreditGrades which have a much smaller number of 
+listings comparing to the CreditGrade 'AA' and there are no listings with those
+CreditGrades after 2009.
+
+This finding help me make a decision to only analyze data of the listings that 
+were created after 2009 in this analysis.
+
+### Plot Two
+
+```{r echo=FALSE, message=FALSE, Plot_Two}
+
+p1 <- ggplot(aes(x=CreditScoreRangeLower, y=BorrowerRate), 
+             data=new_pl_bi) +
+  geom_point(alpha=1/40, position = 'jitter', color='orange') +
+  geom_smooth() +
+  xlab('Lower bound of the credit score range') +
+  ylab("Borrower's interest rate") +
+  coord_cartesian(c(575, 900)) +
+  ggtitle('BorrowerRate vs CreditScoreRangeLower')
+
+p2 <- ggplot(aes(x=CreditScoreRangeUpper, y=BorrowerRate), 
+             data=new_pl_bi) +
+  geom_point(alpha=1/40, position = 'jitter', color='orange') +
+  geom_smooth() +
+  xlab('Upper bound of the credit score range') +
+  ylab("Borrower's interest rate") +
+  coord_cartesian(c(575, 900)) +
+  ggtitle('BorrowerRate vs CreditScoreRangeUpper')
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(p1), 
+                ggplotGrob(p2),
+                size = "first"))
+
+```
+
+### Description Two
+
+This chart clearly shows a strong relationship between the BorrowerRate and 
+CreditScoreRange (Lower/Upper) where the conditional mean of the BorrowerRate is
+decreased as the credit score range increased.
+
+### Plot Three
+
+```{r echo=FALSE, message=FALSE, Plot_Three, fig.width=8}
+
+ggplot(aes(x=LoanOriginalAmount, y=BorrowerRate), data=new_pl) +
+  geom_smooth(aes(color=Term)) +
+  xlab('Original amount of the loan (dollars)') +
+  ylab("Borrower's interest rate") + 
+  labs(color='Length of the loan') +
+  ggtitle("Change of the Borrower's interest rate by the original amount and length of the loan")
+```
+
+### Description Three
+
+This chart shows that the borrower's interest rate is much lower for the 12-Term 
+in average, followed by 36 and 60 Term, and as the original amound of the loan
+increased, the Borrower's interest rate is decreased.
+
+------
+
+# Reflection
+
+This dataset contains a large number of variables and it was challenging to come
+up with a question and choose main and other features to analyze because there 
+are so  many of them.
+
+Additionally, since I do not have knowledge about Prosper Loan before working on 
+this project, I had a difficulty of the terms and technical details explained in
+the variable definition and this also impacts on the previous problem where I 
+spent a lot of time coming up with a question and choose variables that I think 
+it might with the analysis and, as I went through the exercise, many variables 
+that I chose did not seem to have a relationship with the main feature.
+
+After spending time understanding the dataset and getting a basic understanding 
+of the ProsperLoan, I was able to identify states which does not allow Prosper 
+Loan by inspecting the geom_map and found the backup information after this 
+analysis.
+
+In the Univariate analysis section, I also discovered that there are a handful of 
+listing data for various CreditGrade that was stopped creating after 2009 and 
+only the listing data with the CreditGrade 'AA' was created after 2009 and this 
+significantly help me make a decision to only analyze the listing data created 
+after 2009 which is the majority of the population.
+
+Most of the variables that I chose in the Bivariate analysis does not have a 
+strong relationship with the main feature (BorrowerRate) which I think that the 
+biggest problem for this is because of a lack of domain knowledge as I mentioned 
+earlier.
+
+I found the Multivariate Analysis is quite interesting since it help giving 
+insights for the interactions between BorrowerRate, LoanOriginalAmount and other
+variables. Especially, I was surprised to see that the listing with the highest
+IncomeRange get a much higer BorrowerRate on average comparing to the listing 
+with a very low income (e.g. $0)
+
+This dataset has rich features that can be used in the future analysis. I have 
+tidied a few variables to help with this analysis, for example, re-arrange 
+factor levels of the IncomeRange and CreditGrade variables and create a new 
+variable to store a ListingCategory name (the original dataset only contains the
+Category index). There are many more variables in this dataset need to be tidied 
+to accomodate other Exploratory Data Analysis in the future.

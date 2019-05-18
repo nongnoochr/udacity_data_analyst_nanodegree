@@ -1,6 +1,6 @@
 This project contains projects for the ***[Data Analyst Nanodegree Program](https://www.udacity.com/course/data-analyst-nanodegree--nd002)*** 
 
-**Key Skills:** Python, Statistics, numpy, pandas, matplotlib, SQL, SQLite, Tableau
+**Key Skills:** Python, R, Statistics, numpy, pandas, matplotlib, SQL, SQLite, Tableau
 
 ### Table of Contents
 
@@ -96,6 +96,22 @@ You'll use the Python libraries NumPy, pandas, and Matplotlib, which make writin
 A/B tests are very commonly performed by data analysts and data scientists. It is important that you get some practice working with the difficulties of these.
 
 For this project, you will be working to understand the results of an A/B test run by an e-commerce website. The company has developed a new web page in order to try and increase the number of users who "convert," meaning the number of users who decide to pay for the company's product. Your goal is to work through this notebook to help the company understand if they should implement this new page, keep the old page, or perhaps run the experiment longer to make their decision.
+
+### Term 2: 
+
+#### Welcome to Term 2
+
+[Project: Test a Perceptual Phenomenon](./Project_Test_Perceptual_Phenomenon/Test_Perceptual_Phenomenon.ipynb)
+
+In this project, you will investigate a classic phenomenon from experimental psychology called the Stroop Effect. You will learn a little bit about the experiment, create a hypothesis regarding the outcome of the task, then go through the task yourself. You will then look at some data collected from others who have performed the same task and will compute some statistics describing the results. Finally, you will interpret your results in terms of your hypotheses.
+
+
+#### Exploratory Data Analysis
+
+[Project: Explore and Summarize Data](./Project_Explore_and_Summarize_Data/Analysis_of_ProposeLoanData.rmd)
+
+In this project, you will use R and apply exploratory data analysis techniques to explore relationships in one variable to multiple variables and to explore a selected data set for distributions, outliers, and anomalies.
+
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
