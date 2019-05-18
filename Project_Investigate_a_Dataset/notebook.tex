@@ -1,0 +1,1329 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Investigate\_a\_Dataset}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{project-soccer-data-analysis}{%
+\section{Project: Soccer Data
+Analysis}\label{project-soccer-data-analysis}}
+
+\hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+Introduction
+
+Data Wrangling
+
+Exploratory Data Analysis
+
+Conclusions
+
+     \#\# Introduction
+
+The data that is used in this project came from the ``Soccer Database''
+and the ``database.sqlite'' was uploaded to the workspace.
+
+In this project, I will analyze this data to find out which betting
+company returns the most betting money for each league if I always bet
+\$1 on the result with the highest betting odd, and which league returns
+the most betting money based on the same criteria.
+
+Note that I mistakenly used the word `bid' instead of `bet' in variable
+names and some comments and I do not want to update them now because
+updating them might result in errors while running the code.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{} Use this cell to set up import statements for all of the packages that you}
+         \PY{c+c1}{\PYZsh{}   plan to use.}
+         
+         \PY{c+c1}{\PYZsh{} Remember to include a \PYZsq{}magic word\PYZsq{} so that your visualizations are plotted}
+         \PY{c+c1}{\PYZsh{}   inline with the notebook. See this page for more:}
+         \PY{c+c1}{\PYZsh{}   http://ipython.readthedocs.io/en/stable/interactive/magics.html}
+         
+         \PY{k+kn}{import} \PY{n+nn}{math}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{sqlite3}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+         
+         \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+
+
+     \#\# Data Wrangling
+
+To acquire data to answer the questions
+
+``Which betting company returns the most betting money for each league
+if I always bet \$1 on the result with the highest betting odd''
+
+I need to collect betting odds data for all matches in each league.
+Because we need to perform SQL aggregations and data cleaning, it will
+be more performant to operate on smaller set of data. Hence, I will
+acquire required betting data for each league seperately and store them
+in pandas's DataFrames. Here are the steps required to acquire the data:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Get a list of all leagues from the `League' table in the
+  database.sqlite via the api `pd.read\_sql\_query'
+\item
+  Because I have already done the initial exploratory data analysis, I
+  noticed that we do not have enough data for some leagues and some
+  betting companies (Most data is NULL). Hence, I will exclude those
+  leagues and betting companies from this analysis.
+\item
+  To get betting data for each league, 3.1 I will SELECT the `season',
+  `home\_team\_goal', `away\_team\_goal' and betting odds for each
+  company for a particular league where I will use the SQL join with the
+  `League' table and the `Match' table to match the `league\_id' and
+  only scope the data to the league under analysis. 3.2 In addition, I
+  will use the CASE clause to create a `winning\_result' column which
+  compare a number of home team and away team goals and assigned either
+  the letter `H', `D', and `A' based on the comparison results. I will
+  also use the CASE clause to create a '\_max\_bidding' column (suppose
+  to be max\_betting but I do not want to update my code now) for each
+  betting company which stores a letter that represents a column with
+  the highest betting odds (`H', `D', or `A')
+\item
+  The results in the step 3 will be stored in temporary SQL table
+  `t\_match'.
+\item
+  The temporary SQL table `t\_match' will be used to create another
+  temporary SQL table `t\_match' which contains all data in t\_match + a
+  new column '\_win\_bid' for each betting company. The '\_win\_bid'
+  column stores either a value 1 or 0 where 1 means that a column with
+  the highest betting odds matches the actual game result (This means
+  that we will get the betting money from this match) and 0 means that a
+  column with the highest betting odds does NOT match the actual game
+  result (This means that we will lose money from this bet)
+\item
+  Use the SQL query created from steps 3 to 5 above to get data via the
+  api `pd.read\_sql\_query' and store the data in a pandas DataFrame
+\item
+  Create a copy of the DataFrame in the step6 and add a new column
+  '\_bid\_money' for each betting company and use the pandas's apply
+  function to 7.1 Compute the betting money for each match (I will get
+  \$1xbetting\_odds if I win the bet and \$-1 otherwise) 7.2 Clean up
+  the '\_win\_bid' column where replace the value in this column with 0
+  if the betting odds data is not available (NULL)
+\item
+  After getting all necessary data, I will group the DataFrame by the
+  `season' column and find the total sum values of the '\_bid\_money'
+  and '\_win\_bid' columns for each season and store this DataFrame in
+  the dictionary ``allBiddingResults{[}league\_name{]}''
+\item
+  Repeat steps 3 to 8 for other leagues
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{\PYZsh{} Helper functions}
+         
+         \PY{k}{def} \PY{n+nf}{getSelectForMaxCategory}\PY{p}{(}\PY{n}{bidding\PYZus{}company}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+         \PY{l+s+sd}{    Return a SELECT clause to specify Home/Draw/Away win odds columns for the specified bidding company name}
+         \PY{l+s+sd}{    and also create a new column \PYZdq{}company\PYZus{}max\PYZus{}bidding\PYZdq{} which stores a value to indicate which win odds column}
+         \PY{l+s+sd}{    has the highest odds value.}
+         \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+             
+             \PY{n}{name\PYZus{}h} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{H}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             \PY{n}{name\PYZus{}d} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             \PY{n}{name\PYZus{}a} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m.}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             \PY{n}{name\PYZus{}cat} \PY{o}{=} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}max\PYZus{}bidding}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             
+             \PY{n}{select\PYZus{}str} \PY{o}{=} \PY{n}{name\PYZus{}h} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{n}{name\PYZus{}d} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{n}{name\PYZus{}a} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CASE}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{WHEN ( ( }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}h} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZgt{} }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}d} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ) AND ( }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}h} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZgt{} }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}a} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ) ) THEN }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{H}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{WHEN ( ( }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}d} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZgt{} }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}h} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ) AND ( }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}d} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZgt{} }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}a} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ) ) THEN }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ELSE }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ END AS }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{name\PYZus{}cat}\PY{p}{;}
+                 
+             \PY{k}{return} \PY{n}{select\PYZus{}str}\PY{p}{;}
+         
+         
+         \PY{k}{def} \PY{n+nf}{getSelectForWinBidding}\PY{p}{(}\PY{n}{bidding\PYZus{}company}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+         \PY{l+s+sd}{    Return a SELECT clause to create a new column \PYZdq{}company\PYZus{}max\PYZus{}bidding\PYZdq{} which stores a value to indicate whether }
+         \PY{l+s+sd}{    the actual match result matches the win odds column with the highest odds value}
+         \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+             
+             \PY{n}{select\PYZus{}str} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        CASE}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{            WHEN (winning\PYZus{}result = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}max\PYZus{}bidding) THEN 1 }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{            ELSE 0 END AS }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}win\PYZus{}bid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             
+             \PY{k}{return} \PY{n}{select\PYZus{}str}\PY{p}{;}
+         
+         \PY{k}{def} \PY{n+nf}{getBiddingColumns}\PY{p}{(}\PY{n}{bidding\PYZus{}company}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+         \PY{l+s+sd}{    Return a list of columns that need for the analysis for a given bidding company}
+         \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+             
+             \PY{k}{return} \PY{p}{[}\PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}max\PYZus{}bidding}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PYZbs{}
+                     \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PYZbs{}
+                     \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PYZbs{}
+                     \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PYZbs{}
+                     \PY{n}{bidding\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}win\PYZus{}bid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{\PYZsh{} Load your data and print out a few lines. Perform operations to inspect data}
+         \PY{c+c1}{\PYZsh{}   types and look for instances of missing or possibly errant data.}
+         
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{c+c1}{\PYZsh{} Start sqlite connection}
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{n}{conn} \PY{o}{=} \PY{n}{sqlite3}\PY{o}{.}\PY{n}{connect}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{database.sqlite}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{c+c1}{\PYZsh{} Retrieve data}
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         
+         \PY{c+c1}{\PYZsh{}\PYZsh{} STEP 1:}
+         
+         \PY{c+c1}{\PYZsh{} Get all league names}
+         \PY{n}{allLeaguesFromDB} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}sql\PYZus{}query}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT name FROM League}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{conn}\PY{p}{)}\PY{p}{;}
+         
+         
+         \PY{c+c1}{\PYZsh{}\PYZsh{} STEP 2:}
+         
+         \PY{c+c1}{\PYZsh{} Exclude \PYZdq{}PS\PYZdq{}, \PYZdq{}GB\PYZdq{} and \PYZdq{}BS\PYZdq{} because we don\PYZsq{}t have bidding data in many seasons}
+         \PY{n}{bidding\PYZus{}companies} \PY{o}{=} \PY{p}{[}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B365}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BW}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IW}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{WH}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SJ}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VC}\PY{l+s+s2}{\PYZdq{}}
+         \PY{p}{]}\PY{p}{;}
+         
+         \PY{c+c1}{\PYZsh{} The following leagues do not have bidding data. Hence, skip them.}
+         \PY{n}{excludedLeagues} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Poland Ekstraklasa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Switzerland Super League}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{;}
+         
+         \PY{n}{allLeagues} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+         
+         \PY{c+c1}{\PYZsh{} Get league names that we will use in the analysis}
+         \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{allLeaguesFromDB}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{league\PYZus{}name} \PY{o}{=} \PY{n}{allLeaguesFromDB}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{;}
+             
+             \PY{k}{if} \PY{p}{(}\PY{n}{league\PYZus{}name} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{excludedLeagues}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{allLeagues}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{league\PYZus{}name}\PY{p}{)}\PY{p}{;}
+         
+         
+         \PY{c+c1}{\PYZsh{} Get bidding data for each league}
+         \PY{n}{allBiddingResults} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}\PY{p}{;}
+         \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{allLeagues}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{league\PYZus{}name} \PY{o}{=} \PY{n}{allLeagues}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Start getting data for }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{league\PYZus{}name} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{}\PYZsh{} STEPS 3, 4, 5, 6}
+             
+             \PY{c+c1}{\PYZsh{} Create a SQL query to get bidding data}
+             \PY{n}{select\PYZus{}cat\PYZus{}str} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+             \PY{n}{select\PYZus{}winbid\PYZus{}str} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+         
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 
+                 \PY{n}{cur\PYZus{}company} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+                 \PY{n}{select\PYZus{}cat\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{n}{getSelectForMaxCategory}\PY{p}{(}\PY{n}{cur\PYZus{}company}\PY{p}{)}\PY{p}{;}
+                 \PY{n}{select\PYZus{}winbid\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{n}{getSelectForWinBidding}\PY{p}{(}\PY{n}{cur\PYZus{}company}\PY{p}{)}\PY{p}{;}
+                 \PY{k}{if} \PY{n}{cnt} \PY{o}{!=} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{select\PYZus{}cat\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+                     \PY{n}{select\PYZus{}winbid\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+         
+                 \PY{n}{select\PYZus{}cat\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+                 \PY{n}{select\PYZus{}winbid\PYZus{}str} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+         
+             \PY{n}{query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{WITH t\PYZus{}match AS (}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        m.season,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        m.home\PYZus{}team\PYZus{}goal,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        m.away\PYZus{}team\PYZus{}goal,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        CASE}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{            WHEN (m.home\PYZus{}team\PYZus{}goal \PYZgt{} m.away\PYZus{}team\PYZus{}goal) THEN }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{H}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{            WHEN (m.home\PYZus{}team\PYZus{}goal \PYZlt{} m.away\PYZus{}team\PYZus{}goal) THEN }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{            ELSE 	}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ 	END 	AS winning\PYZus{}result,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{n}{select\PYZus{}cat\PYZus{}str} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{From League l }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{    JOIN Match m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        ON m.league\PYZus{}id = l.id }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        AND  l.name IN (}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{league\PYZus{}name} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{) }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{),}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t\PYZus{}match2 AS (}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{    SELECT}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        *,}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{        }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{select\PYZus{}winbid\PYZus{}str} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{    FROM t\PYZus{}match }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{)}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT * }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PYZbs{}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{    FROM t\PYZus{}match2 }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{;}
+         
+             \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}sql\PYZus{}query}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{conn}\PY{p}{)}
+             
+             \PY{c+c1}{\PYZsh{} Only get data from columns that are required for the analysis}
+             \PY{c+c1}{\PYZsh{} and compute the bidding money (\PYZhy{}1 if lose the bidding and use the bidding odds values otherwise)}
+             \PY{n}{columns\PYZus{}bidding} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{season}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{winning\PYZus{}result}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{cur\PYZus{}company} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+                 \PY{n}{cur\PYZus{}bidding\PYZus{}columns} \PY{o}{=} \PY{n}{getBiddingColumns}\PY{p}{(}\PY{n}{cur\PYZus{}company}\PY{p}{)}\PY{p}{;}
+                 \PY{n}{columns\PYZus{}bidding} \PY{o}{+}\PY{o}{=} \PY{n}{cur\PYZus{}bidding\PYZus{}columns}\PY{p}{;}
+         
+             \PY{n}{df1} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{columns\PYZus{}bidding}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+         
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{cur\PYZus{}company} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+                     
+                 \PY{k}{def} \PY{n+nf}{addBidMoneyColumn}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{bid\PYZus{}col\PYZus{}name} \PY{o}{=} \PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{n}{x}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{winning\PYZus{}result}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+         
+                     \PY{c+c1}{\PYZsh{} \PYZhy{}1 when not winning bid}
+                     \PY{n}{bid\PYZus{}money} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+                     \PY{k}{if} \PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}win\PYZus{}bid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{bid\PYZus{}money} \PY{o}{=} \PY{n}{x}\PY{p}{[}\PY{n}{bid\PYZus{}col\PYZus{}name}\PY{p}{]}\PY{p}{;}
+                     \PY{k}{else}\PY{p}{:}
+                         \PY{c+c1}{\PYZsh{} Set bid\PYZus{}money = 0 if the betting odds are NULL (only check for *H is enough)}
+                         \PY{k}{if}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{isnan}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                             \PY{n}{bid\PYZus{}money} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{;}
+         
+                     \PY{k}{return} \PY{n}{bid\PYZus{}money}\PY{p}{;}
+         
+                 \PY{n}{df1}\PY{p}{[}\PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}bid\PYZus{}money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df1}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{addBidMoneyColumn}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{;}
+             
+             \PY{c+c1}{\PYZsh{} Get a total of a number of winning bid and the total bidding money for each season}
+             \PY{c+c1}{\PYZsh{} and store it in the dictionary \PYZdq{}allBiddingResults\PYZdq{}}
+             \PY{n}{columns\PYZus{}results} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{cur\PYZus{}company} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+         
+                 \PY{n}{columns\PYZus{}results}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}win\PYZus{}bid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n}{columns\PYZus{}results}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cur\PYZus{}company} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}bid\PYZus{}money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             
+             \PY{n}{allBiddingResults}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]} \PY{o}{=} \PY{n}{df1}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{season}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{columns\PYZus{}results}\PY{p}{]}\PY{p}{;}
+             
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{* Finish loading data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{c+c1}{\PYZsh{} Close sqlite connection}
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{n}{conn}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Start getting data for "Belgium Jupiler League"
+Start getting data for "England Premier League"
+Start getting data for "France Ligue 1"
+Start getting data for "Germany 1. Bundesliga"
+Start getting data for "Italy Serie A"
+Start getting data for "Netherlands Eredivisie"
+Start getting data for "Portugal Liga ZON Sagres"
+Start getting data for "Scotland Premier League"
+Start getting data for "Spain LIGA BBVA"
+* Finish loading data
+
+    \end{Verbatim}
+
+    \hypertarget{data-cleaning-update-a-number-of-winning-bet-when-betting-odds-are-not-available}{%
+\subsubsection{Data Cleaning (Update a number of winning bet when
+betting odds are not
+available)}\label{data-cleaning-update-a-number-of-winning-bet-when-betting-odds-are-not-available}}
+
+To ease the analysis process, I will create a dictional with the field
+name `numwins' and `moneys' and store DataFrames that contain a number
+of winning bets and the betting money for each league, and columns in
+those DataFrames will be renamed to remove suffix and only use the
+betting company names for those columns.
+
+Additionally, although I already acquired and cleaned the betting data
+for each league and store each of them in the dictionary
+`allBiddingResults' in the previous step, I still need to clean up data
+in the '\_win\_bid' column for each betting company to replace the value
+in this column with 0 if the betting money is 0 (This means that the
+betting data is not available for that season)
+
+The cleaning data above will be store in a new dictionary
+`allBiddingResults\_split'
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{c+c1}{\PYZsh{} After discussing the structure of the data and any problems that need to be}
+         \PY{c+c1}{\PYZsh{}   cleaned, perform those cleaning steps in the second part of this section.}
+         
+         \PY{n}{allBiddingResults\PYZus{}split} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}\PY{p}{;}
+         \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{allLeagues}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{league\PYZus{}name} \PY{o}{=} \PY{n}{allLeagues}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+             
+             \PY{n}{columns\PYZus{}win\PYZus{}bid} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+             \PY{n}{columns\PYZus{}bid\PYZus{}money} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+         
+             \PY{n}{new\PYZus{}columns\PYZus{}win\PYZus{}bid} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}\PY{p}{;}
+             \PY{n}{new\PYZus{}columns\PYZus{}bid\PYZus{}money} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}\PY{p}{;}
+         
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{curCompany} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+         
+                 \PY{n}{columns\PYZus{}win\PYZus{}bid}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{curCompany} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}win\PYZus{}bid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n}{columns\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{curCompany} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}bid\PYZus{}money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         
+                 \PY{n}{new\PYZus{}columns\PYZus{}win\PYZus{}bid}\PY{p}{[}\PY{n}{curCompany} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}win\PYZus{}bid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{curCompany}\PY{p}{;}
+                 \PY{n}{new\PYZus{}columns\PYZus{}bid\PYZus{}money}\PY{p}{[}\PY{n}{curCompany} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}bid\PYZus{}money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{curCompany}\PY{p}{;}
+         
+         
+             \PY{n}{df\PYZus{}win\PYZus{}bid} \PY{o}{=} \PY{n}{allBiddingResults}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{columns\PYZus{}win\PYZus{}bid}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             \PY{n}{df\PYZus{}win\PYZus{}bid}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{new\PYZus{}columns\PYZus{}win\PYZus{}bid}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+             \PY{n}{df\PYZus{}bid\PYZus{}money} \PY{o}{=} \PY{n}{allBiddingResults}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{columns\PYZus{}bid\PYZus{}money}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{new\PYZus{}columns\PYZus{}bid\PYZus{}money}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+             
+             \PY{n}{numSeasons} \PY{o}{=} \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{;}
+             
+             \PY{c+c1}{\PYZsh{}\PYZsh{} Clean up data}
+             
+             \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{bidding\PYZus{}companies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{curCompany} \PY{o}{=} \PY{n}{bidding\PYZus{}companies}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+             
+                 \PY{c+c1}{\PYZsh{} Make a number of wins to 0 if bidding odds data is not available}
+                 \PY{n}{indice} \PY{o}{=} \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{p}{[}\PY{n}{curCompany}\PY{p}{]}\PY{o}{.}\PY{n}{index}\PY{p}{[}\PY{n}{df\PYZus{}bid\PYZus{}money}\PY{p}{[}\PY{n}{curCompany}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{;}
+                 \PY{n}{df\PYZus{}win\PYZus{}bid}\PY{p}{[}\PY{n}{curCompany}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{indice}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{;}
+                 
+                 \PY{c+c1}{\PYZsh{} Use the average number to fill NaN \PYZhy{} don\PYZsq{}t need it now}
+         \PY{c+c1}{\PYZsh{}         if (len(indice) \PYZgt{} 0):}
+                                 
+         \PY{c+c1}{\PYZsh{}             sumVal = df\PYZus{}bid\PYZus{}money[curCompany].sum();}
+         \PY{c+c1}{\PYZsh{}             lenMean = numSeasons \PYZhy{} len(indice);}
+                     
+         \PY{c+c1}{\PYZsh{}             avgVal = df\PYZus{}bid\PYZus{}money[curCompany].sum() / lenMean;}
+         \PY{c+c1}{\PYZsh{}             df\PYZus{}bid\PYZus{}money[curCompany].loc[indice] = avgVal;}
+         
+         
+             
+             \PY{n}{allBiddingResults\PYZus{}split}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{numwins}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{df\PYZus{}win\PYZus{}bid}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{p}{\PYZcb{}}\PY{p}{;}
+\end{Verbatim}
+
+
+     \#\# Exploratory Data Analysis
+
+\hypertarget{research-question-1-which-betting-company-gives-the-most-betting-return}{%
+\subsubsection{Research Question 1 (Which Betting Company gives the most
+betting
+return)}\label{research-question-1-which-betting-company-gives-the-most-betting-return}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{c+c1}{\PYZsh{} Use this, and more code cells, to explore your data. Don\PYZsq{}t forget to add}
+         \PY{c+c1}{\PYZsh{}   Markdown cells to document your observations and findings.}
+         
+         \PY{n}{numPlot} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{;}
+         
+         \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{allLeagues}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{league\PYZus{}name} \PY{o}{=} \PY{n}{allLeagues}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{***********************************}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{***** }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ *****}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{league\PYZus{}name}\PY{p}{)}\PY{p}{)}\PY{p}{;}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{***********************************}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             
+             \PY{n}{df\PYZus{}bid\PYZus{}money} \PY{o}{=} \PY{n}{allBiddingResults\PYZus{}split}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+             \PY{n}{df\PYZus{}bid\PYZus{}numwins} \PY{o}{=} \PY{n}{allBiddingResults\PYZus{}split}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{numwins}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+         
+             
+             \PY{c+c1}{\PYZsh{}\PYZsh{} Line chart \PYZhy{} bidding money}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{numPlot}\PY{p}{)}\PY{p}{;}
+             \PY{n}{numPlot} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{;}
+             
+             \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total betting money maded between seasons 2008/2009 to 2015/2016}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total returned betting money (\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             
+             \PY{c+c1}{\PYZsh{}\PYZsh{} Line chart \PYZhy{} Total number of winning bids}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{numPlot}\PY{p}{)}\PY{p}{;}
+             \PY{n}{numPlot} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{;}
+             
+             \PY{n}{df\PYZus{}bid\PYZus{}numwins}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total counts of winning bets between seasons 2008/2009 to 2015/2016}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total counts of winning bets}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             
+             
+             \PY{c+c1}{\PYZsh{}\PYZsh{} Bar chart for mean values}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{numPlot}\PY{p}{)}\PY{p}{;}
+             \PY{n}{numPlot} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{;}    
+             
+             \PY{n}{df\PYZus{}bid\PYZus{}money\PYZus{}mean} \PY{o}{=} \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             \PY{n}{df\PYZus{}bid\PYZus{}money\PYZus{}mean}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{;}
+         
+             \PY{n}{df\PYZus{}bid\PYZus{}money\PYZus{}mean}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean value of betting money getting from each betting company between seasons 2008/2009 to 2015/2016}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Betting Company}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returned betting money (\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+         
+             \PY{c+c1}{\PYZsh{}\PYZsh{} Boxplot}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{numPlot}\PY{p}{)}\PY{p}{;}
+             \PY{n}{numPlot} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{;}
+         
+             \PY{n}{df\PYZus{}bid\PYZus{}money}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Box plot of betting money getting from each betting company between seasons 2008/2009 to 2015/2016}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Betting Company}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returned betting money (\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{+++++++++++++++++++++++++++++++++++}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Observations: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{k}{if} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Belgium Jupiler League}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, the total returned betting money will be little positive and negative for the seasons 2010/2011, 2011/2012, 2014/2015 }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) The betting data is not available for the season 2013/2014}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} England Premier League}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, in the season 2009/2010, we will lose money for some betting companies and will gain little money from the rest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) However, the line chart for the returned betting money shows that, after the season 2009/2010, the returned betting data will be increased quite significantly with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} France Ligue 1}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) The line for the returned betting money shows both negative and positive returned betting money in the seasons 2011/2012, 2013/2014, and 2014/2015}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria although is not quite significant as in other leagues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Germany 1. Bundesliga}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, in the season 2013/2014, we will lose money for some betting companies and will gain little money from the rest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}        
+             
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Italy Serie A }
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, the total returned betting money will be negative for the seasons 2009/2010 and 2013/2014 and other seasons will have both positive and negative values}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria and this value is much smaller than other leagues. Additionally, some bettings companies will return the negative betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Netherlands Eredivisie }
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, we will lose a lot of money from all betting companies in the season 2009/2010, we will both lose and gain money for other seasons}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria and this value is much smaller than other leagues. Additionally, some bettings companies will return the negative betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Portugal Liga ZON Sagres}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, we will lose a lot of money from all betting companies in the seasons 2009/2010, 2011/2012 and 2012/2013, we will both lose and gain money for other seasons}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{B365}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money (less than \PYZdl{}10), followed by }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ with the current betting criteria and this value is much smaller than other leagues. Additionally, all other bettings companies will return the negative betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Scotland Premier League  }
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, the total returned betting money will be little positive and negative for the seasons 2013/2014 and 2014/2015}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    
+                 
+             \PY{k}{elif} \PY{p}{(}\PY{n}{cnt} \PY{o}{==} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Spain LIGA BBVA }
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1) With our betting criteria, the total returned betting money will be negative for the season 2009/2010 and will be positive and negative for the seasons 2010/2011 and 2011/2012}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2) In average, the betting company }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{B365}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{ will returned the most betting money with the current betting criteria, followed by }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{VC}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    
+                 
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+***********************************
+***** Belgium Jupiler League *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e22931ac8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e206ba710>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_6.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, the total returned betting money will be little positive and negative for the seasons 2010/2011, 2011/2012, 2014/2015 
+2) The betting data is not available for the season 2013/2014
+3) In average, the betting company "VC" will returned the most betting money with the current betting criteria
+
+
+***********************************
+***** England Premier League *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e2299a828>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e205f83c8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_12.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_13.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, in the season 2009/2010, we will lose money for some betting companies and will gain little money from the rest
+2) However, the line chart for the returned betting money shows that, after the season 2009/2010, the returned betting data will be increased quite significantly with the current betting criteria
+3) In average, the betting company "VC" will returned the most betting money with the current betting criteria
+
+
+***********************************
+***** France Ligue 1 *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e2283a978>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_16.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ea612b0>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_18.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_19.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_20.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) The line for the returned betting money shows both negative and positive returned betting money in the seasons 2011/2012, 2013/2014, and 2014/2015
+2) In average, the betting company "VC" will returned the most betting money with the current betting criteria although is not quite significant as in other leagues
+
+
+***********************************
+***** Germany 1. Bundesliga *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ec804e0>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_23.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e22a63ef0>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_25.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_26.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_27.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, in the season 2013/2014, we will lose money for some betting companies and will gain little money from the rest
+2) In average, the betting company "VC" will returned the most betting money with the current betting criteria
+
+
+***********************************
+***** Italy Serie A *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ecbf518>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_30.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e206cacf8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_32.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_33.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_34.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, the total returned betting money will be negative for the seasons 2009/2010 and 2013/2014 and other seasons will have both positive and negative values
+2) In average, the betting company "VC" will returned the most betting money with the current betting criteria and this value is much smaller than other leagues. Additionally, some bettings companies will return the negative betting money with the current betting criteria
+
+
+***********************************
+***** Netherlands Eredivisie *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ec00cf8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_37.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e227186d8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_39.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_40.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_41.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, we will lose a lot of money from all betting companies in the season 2009/2010, we will both lose and gain money for other seasons
+2) In average, the betting company "VC" will returned the most betting money with the current betting criteria and this value is much smaller than other leagues. Additionally, some bettings companies will return the negative betting money with the current betting criteria
+
+
+***********************************
+***** Portugal Liga ZON Sagres *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ed7a630>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_44.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e20688470>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_46.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_47.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_48.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, we will lose a lot of money from all betting companies in the seasons 2009/2010, 2011/2012 and 2012/2013, we will both lose and gain money for other seasons
+2) In average, the betting company "B365" will returned the most betting money (less than \$10), followed by "VC" with the current betting criteria and this value is much smaller than other leagues. Additionally, all other bettings companies will return the negative betting money with the current betting criteria
+
+
+***********************************
+***** Scotland Premier League *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e22993fd0>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_51.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e2283acf8>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_53.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_54.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_55.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, the total returned betting money will be little positive and negative for the seasons 2013/2014 and 2014/2015
+2) In average, the betting company "VC" will returned the most betting money with the current betting criteria
+
+
+***********************************
+***** Spain LIGA BBVA *****
+***********************************
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1ebb2f60>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_58.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{verbatim}
+<matplotlib.figure.Figure at 0x7f9e1e9b3668>
+    \end{verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_60.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_61.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_62.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+1) With our betting criteria, the total returned betting money will be negative for the season 2009/2010 and will be positive and negative for the seasons 2010/2011 and 2011/2012
+2) In average, the betting company "B365" will returned the most betting money with the current betting criteria, followed by "VC"
+
+
+
+    \end{Verbatim}
+
+    \hypertarget{research-question-2-which-league-gives-the-highest-betting-return}{%
+\subsubsection{Research Question 2 (Which league gives the highest
+betting
+return)}\label{research-question-2-which-league-gives-the-highest-betting-return}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{c+c1}{\PYZsh{} Continue to explore the data to address your additional research}
+         \PY{c+c1}{\PYZsh{}   questions. Add more headers as needed if you have more questions to}
+         \PY{c+c1}{\PYZsh{}   investigate.}
+         
+         \PY{c+c1}{\PYZsh{} Get the mean bidding money for each league}
+         \PY{n}{mean\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+         \PY{k}{for} \PY{n}{cnt} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{allLeagues}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{league\PYZus{}name} \PY{o}{=} \PY{n}{allLeagues}\PY{p}{[}\PY{n}{cnt}\PY{p}{]}\PY{p}{;}
+             
+             \PY{n}{df\PYZus{}money} \PY{o}{=} \PY{n}{allBiddingResults\PYZus{}split}\PY{p}{[}\PY{n}{league\PYZus{}name}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{money}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{;}
+             \PY{n}{mean\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{df\PYZus{}money}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{;}
+         
+         \PY{c+c1}{\PYZsh{} Create a dataframe and descendingly sort the mean data    }
+         \PY{n}{df\PYZus{}mean} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{mean\PYZus{}data}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{allLeagues}\PY{p}{)}\PY{p}{;}   
+         \PY{n}{df\PYZus{}mean}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{;}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}mean}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Create a bar chart}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+         \PY{n}{df\PYZus{}mean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean values of returned betting money between seasons 2008/2009 to 2015/2016 for each league}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}    
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{League}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}    
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returned betting money (\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{+++++++++++++++++++++++++++++++++++}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Observations: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With the current betting criteria, we should make the betting in the England Premier League because it returns the most betting money in average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+                               mean
+England Premier League    67.647500
+Germany 1. Bundesliga     59.077857
+Scotland Premier League   36.955893
+Spain LIGA BBVA           35.295000
+France Ligue 1            18.815179
+Belgium Jupiler League    15.767500
+Netherlands Eredivisie     9.914464
+Italy Serie A              3.517321
+Portugal Liga ZON Sagres  -4.009286
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
++++++++++++++++++++++++++++++++++++
+Observations: 
+With the current betting criteria, we should make the betting in the England Premier League because it returns the most betting money in average
+
+    \end{Verbatim}
+
+     \#\# Conclusions
+
+\hypertarget{research-question-1-which-bidding-company-gives-the-most-bidding-return}{%
+\subsubsection{Research Question 1 (Which Bidding Company gives the most
+bidding
+return)}\label{research-question-1-which-bidding-company-gives-the-most-bidding-return}}
+
+The charts in the Research Question1 show that the `VC' company returns
+the most bidding money if we only bet \texttt{\$}1 for the result with
+the highest winning odds in almost all leagues except 1) Portugal Liga
+ZON Sagres 2) Spain LIGA BBVA
+
+where B365 returns higher mean value of the returned betting money (We
+should not bid in ``Portugal Liga ZON Sagres'' anyway because the
+betting money is very small and most companies have a negative mean
+value.
+
+\hypertarget{research-question-2-which-league-gives-the-highest-bidding-return}{%
+\subsubsection{Research Question 2 (Which league gives the highest
+bidding
+return)}\label{research-question-2-which-league-gives-the-highest-bidding-return}}
+
+With the current betting criteria (only bet \texttt{\$1} for the result
+with the highest winning odds), ``England Premier League'' return the
+maximum mean value of the returned betting money (\texttt{\$}67.65) and
+followed by ``Germany 1. Bundesliga'' (\texttt{\$}59) and ``Scotland
+Premier League'' (\texttt{\$}37). The league that I should not bet on
+with this criteria is ``Portugal Liga ZON Sagres'' where the mean value
+of the returned betting money is negative (\texttt{\$}4)
+
+\hypertarget{limitations}{%
+\subsubsection{Limitations}\label{limitations}}
+
+I need to drop a few leagues (``Poland Ekstraklasa'' and ``Switzerland
+Super League'') and betting companies (``PS'', ``GB'' and ``BS'') from
+this analysis because their betting data is not available and they
+might/might not return higher returned betting money for the current
+criteria.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}82}]:} \PY{k+kn}{from} \PY{n+nn}{subprocess} \PY{k}{import} \PY{n}{call}
+         \PY{n}{call}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nbconvert}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Investigate\PYZus{}a\PYZus{}Dataset.ipynb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}82}]:} 0
+\end{Verbatim}
+            
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

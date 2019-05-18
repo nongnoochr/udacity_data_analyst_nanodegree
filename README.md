@@ -80,6 +80,15 @@ In this project, you will analyze local and global temperature data and compare 
 
 In this project, you will make use of Python to explore data related to bikeshare systems for three major bikeshare systems in the United States. You will perform data wrangling to unify the format of data from the three systems and write code to compute descriptive statistics. You will also make use of a package that is not part of the standard Python library to help you visualize the data.
 
+#### Introduction to Data Analysis
+
+
+[Project: Investigating a Dataset](./Project_Investigate_a_Dataset/Investigate_a_Dataset.ipynb)
+
+In this project, you'll go through the data analysis process and see how everything fits together. Later Nanodegree projects will focus on individual pieces of the data analysis process.
+
+You'll use the Python libraries NumPy, pandas, and Matplotlib, which make writing data analysis code in Python a lot easier! Not only that, these are sought-after skills by employers!
+
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
