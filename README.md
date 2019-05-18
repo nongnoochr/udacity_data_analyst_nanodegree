@@ -29,7 +29,7 @@ The Data Analyst Nanodegree program offers you the opportunity to master data sk
 Note that I took the Data Analyst Nanodegree program when it consisted of 2 terms.
 
 Currently (As of 05/19/2019) - The program has been updated to only contain one term (See a syllabus of the updated program [here](./nd002-syllabus_2018-June_v9.pdf))
-*(eOte that I could not find the original syllabus anymore)*
+*(Note that I could not find the original syllabus anymore)*
 
 A major difference between the old and updated courses is that the the old course
 also provide classes to go over Python (numpy+pandas+matplotlib) and SQL in great details during Term 1 and I also did projects for them as well.
@@ -89,6 +89,13 @@ In this project, you'll go through the data analysis process and see how everyth
 
 You'll use the Python libraries NumPy, pandas, and Matplotlib, which make writing data analysis code in Python a lot easier! Not only that, these are sought-after skills by employers!
 
+#### Practical Statistics
+
+[Project: Analyze A/B Test Results](./Project_Analyze_AB_Test_Results/Analyze_ab_test_results_notebook.ipynb)
+
+A/B tests are very commonly performed by data analysts and data scientists. It is important that you get some practice working with the difficulties of these.
+
+For this project, you will be working to understand the results of an A/B test run by an e-commerce website. The company has developed a new web page in order to try and increase the number of users who "convert," meaning the number of users who decide to pay for the company's product. Your goal is to work through this notebook to help the company understand if they should implement this new page, keep the old page, or perhaps run the experiment longer to make their decision.
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
